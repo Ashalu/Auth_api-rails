@@ -1,14 +1,4 @@
-- if current_user.present?
-	= current_user.email	
-	= form_tag users_enable_otp_validate_auth_path, method: :post
-		.row.mt-20
-			.col-md-12.col-sm-12.col-xs-12
-				label = t 'update_two_fa.auth_code_label'
-			.col-md-8.col-sm-8.col-xs-12.mb-10
-				= text_field_tag 'user[code]','',class: "form-control", autocomplete: 'off', placeholder:"#{t 'update_two_fa.auth_code_placeholder'}"
-			.col-md-4.col-sm-4.col-xs-12.mb-10
-				= submit_tag "enable"
-	h2
+h2
 		i.fa.fa-key
 		| Two Factor Authentication
 		span Use Google Authenticator
@@ -24,30 +14,30 @@
 .row
 	.col-md-6.col-sm-12.col-xs-12
 		.panel.rounded.shadow.panel-teal
-			- if !current_user.otp_required_for_login 
-				.panel-heading
-					h3.panel-title Your Personalized Google Authenticator Code
-				.panel-body
-					.inner-all
-						ul.list-unstyled
-							li.text-center
-								.twofa.text-center
-									.barbode.text-center style="background: white; display: inline-block;"
-										/ = raw RQRCode::render_qrcode(current_user.otp_provisioning_uri(current_user.email, issuer: "alt247"), :svg, :level => :l, :unit => 5)
-							br
-							li
-								.callout.callout-info.mb-20
-									p
-										| Scan Above QR-code and Enter Code Below
-							li
-								= form_tag users_enable_otp_validate_auth_path, method: :post
-								.row.mt-20
-									.col-md-12.col-sm-12.col-xs-12
-										label Authentication code
-									.col-md-8.col-sm-8.col-xs-12.mb-10
-										= text_field_tag 'user[code]','',class: "form-control", autocomplete: 'off', placeholder:"Enter authentication code"
-									.col-md-4.col-sm-4.col-xs-12.mb-10 
-										= submit_tag "Enable 2FA", class: "btn btn-success b-radius-0 two-f-a"
+				/ - if !current_user.otp_required_for_login 
+			.panel-heading
+				h3.panel-title Your Personalized Google Authenticator Code
+			.panel-body
+				.inner-all
+					ul.list-unstyled
+						li.text-center
+							.twofa.text-center
+								.barbode.text-center style="background: white; display: inline-block;"
+									= raw RQRCode::render_qrcode(current_user.otp_provisioning_uri(current_user.email, issuer: "alt247"), :svg, :level => :l, :unit => 5)
+						br
+						li
+							.callout.callout-info.mb-20
+								p
+									| Scan Above QR-code and Enter Code Below
+						li
+							= form_tag users_enable_otp_validate_auth_path, method: :post
+							.row.mt-20
+								.col-md-12.col-sm-12.col-xs-12
+									label Authentication code
+								.col-md-8.col-sm-8.col-xs-12.mb-10
+									= text_field_tag 'user[code]','',class: "form-control", autocomplete: 'off', placeholder:"Enter authentication code"
+								.col-md-4.col-sm-4.col-xs-12.mb-10 
+									= submit_tag "Enable 2FA", class: "btn btn-success b-radius-0 two-f-a"
 
 			- if current_user.otp_required_for_login
 				.panel-heading
@@ -106,5 +96,3 @@ javascript:
 	  window.getSelection().removeAllRanges();  
 	  setTimeout(function(){$('.copy-text').hide()}, 2000);
 	}
-	
-=link_to 'Logout', destroy_user_session_path, method: :delete
